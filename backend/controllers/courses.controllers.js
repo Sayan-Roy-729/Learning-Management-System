@@ -55,6 +55,6 @@ module.exports.createCourseController = async (req, res, next) => {
         parentId,
         slug
     });
-    newPost.save();
+    newcourse.save();
     res.status(200).json({ message: 'course created successfully!' });
 };
