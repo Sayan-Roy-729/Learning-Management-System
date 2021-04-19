@@ -2,9 +2,9 @@ const { getCourseController, createCourseController } = require('../controllers/
 
 const router = require('express').Router();
 
-//http://localhost:8080/api/v1/courses/:name [GET]
-router.get('/:name', getCourseController)
-//http://localhost:8080/api/v1/courses/:name [post]
+//! api/v1/courses/get/:name [GET]
+router.get('/get/:name', getCourseController)
+//! api/v1/courses/:name [post]
 router.post('/create', createCourseController)
 
 

@@ -13,6 +13,10 @@ const coursesSchema = schema({
    imageUrl:{
        type:String,
    },
+   videoUrl:{
+       type: String,
+       require: true,
+   },
    parentId:{
        type: String,
    },

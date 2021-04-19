@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const courses = require('../models/courses');
 
 
-//http://localhost:8080/api/v1/courses/:name [GET]
+//! /api/v1/courses/:name [GET]
 module.exports.getCourseController = (req , res , next )=>{
-
+    // if we get any params
     if(req.params){
+        // finding the course data by using name
         mongoose.find({
             name:req.params.name,
         }).then((course)=>{
@@ -13,7 +14,7 @@ module.exports.getCourseController = (req , res , next )=>{
                 const error = new Error('Course Not found!');
                 error.statusCode=404;
                 throw error
-            } 
+            } //finding the course by using course_id
             return mongoose.find({
                 parentId:course._id.toString()
             })
@@ -23,7 +24,7 @@ module.exports.getCourseController = (req , res , next )=>{
                 error.statusCode=404;
                 throw error
             }
-            
+            // sending data to frontend
             res.status(200).json({massage:'Successful',content:data});
 
         }).catch((err)=>{
@@ -36,7 +37,7 @@ module.exports.getCourseController = (req , res , next )=>{
     
 }
 
-//http://localhost:8080/api/v1/courses/:name [post]
+//! /api/v1/courses/:name [post]
 module.exports.createCourseController = async (req, res, next) => {
     let imageUrl;
     if (req.file.filename) {
@@ -47,11 +48,13 @@ module.exports.createCourseController = async (req, res, next) => {
     let name= req.body.name;
     let parentId = req.body.parentId;
     let slug = req.body.slug;
+    let videoUrl= req.body.videoUrl;
 
     const newcourse = await new courses({
         name,
         description,
         imageUrl,
+        videoUrl,
         parentId,
         slug
     });
