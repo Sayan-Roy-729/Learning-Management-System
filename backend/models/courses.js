@@ -7,7 +7,7 @@ const coursesSchema = schema({
        type:String,
        require:true,
    },
-   descripton:{
+   description:{
        type:String,
    },
    imageUrl:{
@@ -15,7 +15,6 @@ const coursesSchema = schema({
    },
    videoUrl:{
        type: String,
-       require: true,
    },
    parentId:{
        type: String,
