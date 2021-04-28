@@ -11,7 +11,6 @@ module.exports.paymentController = (req, res, next) => {
     // Create unique idempotencyKey from every payment
     const idempotencyKey = uuid.v4();
     // for access the charges after successful payment
-    var charges;
 
     // Create new Customer
     stripe.customers
@@ -37,6 +36,8 @@ module.exports.paymentController = (req, res, next) => {
                     if (!error) {
                         next(error);
                     }
+
+                    console.log('Charges = ', charge);
 
                     Payments.findOne({ userEmail }).then((user) => {
                         // Fetch required details

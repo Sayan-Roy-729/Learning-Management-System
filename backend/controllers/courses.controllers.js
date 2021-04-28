@@ -70,8 +70,6 @@ module.exports.createCourseController = (req, res, next) => {
         error.statusCode = 404;
         next(error);
     } else {
-        console.log('File => ', req.file);
-
         // Fetch necessary details from request body
         const description = req.body.description;
         const name = req.body.name.toLowerCase();
