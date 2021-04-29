@@ -1,13 +1,13 @@
 # Learning Management System Backend (LMS - Backend)
 This backend is deployed in [heroku](https://dashboard.heroku.com)
-## Rest API URLS:
-### API Base URL
+## ✨ Rest API URLS:
+### ✨ API Base URL
 **https://lms-backend-rest-api.herokuapp.com/api/v1**
-### Get Available Courses
-- **End Point:** /get 
-- **Method:** GET
-- **Description:** This api only returns the courses that are stored into database. If there are two 3 courses into the database, and every course has its own content videos, then this api only returns the json of course of course image url, course title and course title.
-- **Example Response with 200 Status Code:**
+### ✨ Get Available Courses
+- ✔ **End Point:** */get*
+- ✔ **Method:** GET
+- ✔ **Description:** This api only returns the courses that are stored into database. If there are two 3 courses into the database, and every course has its own content videos, then this api only returns the json of course of course image url, course title and course title.
+- ✔ **Example Response with 200 Status Code:**
 ```json
 {
     "message": "Successful",
@@ -31,15 +31,14 @@ This backend is deployed in [heroku](https://dashboard.heroku.com)
     ]
 }
 ```
-- **Error Response:**
-  - **Status Code 404:** *No course found*. If there is no course uploaded into the database, then this error will be occurred.
-  - **Status Code 500:** If any server side error occurred (with *error message*)
+- ✔ **Error Response:**
+  - 🎗 **Status Code 404:** *No course found*. If there is no course uploaded into the database, then this error will be occurred.
+  - 🎗 **Status Code 500:** If any server side error occurred (with *error message*)
 
-
-### Get Contents of a Particular Course:
-- **End Point:** /get?name=html
--  **Description:** To fetch the content videos, only pass an additional information (query parameter of key *name*). 
--  **Example Response with 200 Status Code:**
+### ✨ Get Contents of a Particular Course:
+- ✔ **End Point:** */get?name=<courseName>*
+- ✔  **Description:** To fetch the content videos, only pass an additional information (query parameter of key *name*). 
+- ✔  **Example Response with 200 Status Code:**
 ```json
 {
     "massage": "Successful",
@@ -65,7 +64,51 @@ This backend is deployed in [heroku](https://dashboard.heroku.com)
     ]
 }
 ```
-- **Error Response:**
-  - **Status Code 404:** *Course Not found!*. If there is no course into the database.
-  - **Status Code 404:** *Content Not found!*. If there is no video contents of the course.
-  - **Status Code 500:** If any server side error occurred (with *error message*)
+- **✔ Error Response:**
+  - 🎗 **Status Code 404:** *Course Not found!*. If there is no course into the database.
+  - 🎗 **Status Code 404:** *Content Not found!*. If there is no video contents of the course.
+  - 🎗 **Status Code 500:** If any server side error occurred (with *error message*)
+
+### ✨ Create New Course:
+- ✔ **End Point:** *courses/create*
+- ✔ **Method:** POST
+- ✔ **Description:** Create new course or lets say register a course into the database
+- ✔ **Required Fields:**
+    - 🎗 **courseImage:** This field name is required to upload a course image. Only *.jpg, .jpeg, .png, .svg* type images are allowed and file size should not more than 5MB.
+    - 🎗 **name:** This field is required for the course name.
+    - 🎗 **description:** This field is required for the description of the course.
+
+- ✔ **Example Response WIth 200 Status Code:**
+```json
+{
+    "message": "Successfully created!",
+    "course": {
+        "_id": "608a41580e62a10015f34c19",
+        "name": "css",
+        "description": "The web today is almost unrecognizable from the early days of white pages with lists of blue links.  Now, sites are designed with complex layouts, unique fonts, and customized color schemes.   This course will show you the basics of Cascading Style Sheets (CSS3).  The emphasis will be on learning how to write CSS rules, how to test code, and how to establish good programming habits.   ",
+        "imageUrl": "uploads/1619673431768-43u3U6221-CSS Image.png",
+        "slug": "css",
+        "__v": 0
+    }
+}
+```
+- ✔ **Error Responses**
+    - 🎗 **Status Code 404:** *Course image file is required*. If image file is not passed.
+    - 🎗 **Status Code 409:** *Course already created!*. If the course already registed into the database
+    - 🎗 **Status Code 500:** *Internal server error.* 
+    - 🎗 **Status Code 500:** If any error occurred to handle the image file into the server
+```json
+{
+    "error": "ENOENT: no such file or directory, open 'uploads/1619672346098-656490834.4697007-NSnrZ6zKl-.png'"
+}
+```
+
+### ✨ Upload Course Content:
+- ✔ **End Point:** *courses/upload*
+- ✔ **Method:** POST
+- ✔ **Description:** To upload the couse contents (videos)
+- ✔ **Required Fields:**
+    - 🎗 **courseContentVideos:** This field is required to upload a video. Supported file type is *.mp4* and file size should not more than 100MB.
+    - 🎗 **name:** This filed is required for video content title.
+    - 🎗 **description:** To add the description of the content, this field name should be used.
+    - 🎗 **parentId:** This field is required to identify which course's video it is. The value of this field should be matched with couser's *_id*. 
