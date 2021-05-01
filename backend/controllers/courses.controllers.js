@@ -104,6 +104,12 @@ module.exports.createCourseController = (req, res, next) => {
                     });
                 }
             });
+        }).catch(error => {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+
+            next(error);
         });
     }
 };

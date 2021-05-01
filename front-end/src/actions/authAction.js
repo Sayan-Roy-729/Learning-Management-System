@@ -166,8 +166,8 @@ export const googleSignIn = () => {
         const provider = new firebase.auth.GoogleAuthProvider();
 
         firebase.auth().signInWithPopup(provider).then(result => {
-            const credential = result.credential;
-            const token = credential.accessToken;
+            // const credential = result.credential;
+            // const token = credential.accessToken;
             const user = result.user;
 
             dispatch({
@@ -178,7 +178,7 @@ export const googleSignIn = () => {
             });
         }).catch(error => {
             const errorMessage = error.message;
-            const email = error.email;
+            // const email = error.email;
 
             dispatch({
                 type: authConstants.USER_GOOGLE_SIGN_IN_FAILURE,

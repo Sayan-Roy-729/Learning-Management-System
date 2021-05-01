@@ -26,7 +26,7 @@ let imageUpload = multer({
     limits: 5000 * 1000,
     fileFilter: (req, file, cb) => {
         // Allowed file extensions
-        const fileTypes = /jpeg|jpg|png/;
+        const fileTypes = /jpeg|jpg|png|svg/;
         // Check the extension
         const extName = fileTypes.test(
             path.extname(file.originalname).toLocaleLowerCase()
