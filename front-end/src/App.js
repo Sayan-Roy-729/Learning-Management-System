@@ -6,6 +6,7 @@ import './App.css';
 import Home from './pages';
 import SigninPage from './pages/signin';
 import { currentSignInUser } from './actions/authAction';
+import CoursePage from './pages/course';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
       <Switch>
         <Route path="/" component={Home} exact/>
         <Route path="/signin" component={SigninPage} exact/>
+        <Route path = '/course' component = {CoursePage} exact />
       </Switch>
     </Router>
   );
