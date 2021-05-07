@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
 import { Form, FormButton, FormContent, FormH1, FormInput, FormLabel, FormWrap , Text , Icon, Container} from './SigninElements';
-import { signInUser, clearErrorMessage, userResetPassword, clearSentEmail } from '../../actions/authAction';
+import { signInUser, clearErrorMessage, userResetPassword, clearSentEmail, googleSignIn } from '../../actions/authAction';
 import Loader from '../Loader/Loader';
 
 const SignIn = (props) => {
@@ -88,6 +88,11 @@ const SignIn = (props) => {
             dispatch(userResetPassword(email));
         }
     };
+
+    //? Google Sign In
+    const googleSignInHandler = () => {
+        dispatch(googleSignIn());
+    };
     
     if (authenticationState.loading) {
         return <Loader />;
@@ -114,7 +119,13 @@ const SignIn = (props) => {
                             {
                                 forgotPassword ? (
                                     <Text onClick = {() => setForgotPassword(false)}>Return SignIn Page</Text>
-                                ) : <Text onClick = {() => setForgotPassword(true)}>Forgot password</Text>
+                                ) : (
+                                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <Text onClick = {() => setForgotPassword(true)} style={{cursor: 'pointer'}}>Forgot password</Text>
+                                        <Text>OR</Text>
+                                        <Text style={{cursor: 'pointer'}} onClick = {googleSignInHandler}>Google SignIn</Text>
+                                    </div>
+                                )
                             }
                         </Form>
                     </FormContent>

@@ -101,6 +101,8 @@ export const userSignOut = () => {
             type: authConstants.USER_SIGN_OUT_LOADING,
         });
 
+        console.log('Sign out user');
+
         firebase
             .auth()
             .signOut()

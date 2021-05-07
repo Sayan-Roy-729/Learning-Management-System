@@ -14,8 +14,10 @@ import {
     NavLinks,
     NavBtn,
     NavBtnLink,
+    SignupLinks,
 } from './NavbarElements';
 import { userSignOut } from '../../actions/authAction';
+import { clearCourseState } from '../../actions/courseAction';
 
 const Navbar = ({ toggle }) => {
     const [scrollNav, setScrollNav] = useState(false);
@@ -41,8 +43,9 @@ const Navbar = ({ toggle }) => {
 
     // ? Sign Out Handler
     const signOutHandler = () => {
+        dispatch(clearCourseState());
         dispatch(userSignOut());
-    }
+    };
 
     return (
         <>
@@ -92,10 +95,25 @@ const Navbar = ({ toggle }) => {
                                     Mock Interview
                                 </NavLinks>
                             </NavItem>
-                            <NavItem>
-                                {authenticationState.user === null && (
-                                    <NavLinks
-                                        to="signup"
+                            {authenticationState.user !== null && (
+                                <NavItem>
+                                    <SignupLinks
+                                        to="/dashboard"
+                                        smooth={true}
+                                        duration={500}
+                                        spy={true}
+                                        exact="true"
+                                        offset={-80}
+                                        style={{textDecoration: 'none'}}
+                                    >
+                                        Dashboard
+                                    </SignupLinks>
+                                </NavItem>
+                            )}
+                            {authenticationState.user === null && (
+                                <NavItem>
+                                    <SignupLinks
+                                        to="/signup"
                                         smooth={true}
                                         duration={500}
                                         spy={true}
@@ -103,14 +121,16 @@ const Navbar = ({ toggle }) => {
                                         offset={-80}
                                     >
                                         Sign Up
-                                    </NavLinks>
-                                )}
-                            </NavItem>
+                                    </SignupLinks>
+                                </NavItem>
+                            )}
                         </NavMenu>
                         <NavBtn>
                             <div>
                                 {authenticationState.user ? (
-                                    <NavBtnLink onClick = {signOutHandler}>Sign Out</NavBtnLink>
+                                    <NavBtnLink onClick={signOutHandler}>
+                                        Sign Out
+                                    </NavBtnLink>
                                 ) : (
                                     <NavBtnLink to="/signin">
                                         Sign In

@@ -7,9 +7,11 @@ import thunk from 'redux-thunk';
 import App from './App';
 
 import authReducer from './reducers/authReducer';
+import courseReducer from './reducers/courseReducer';
 
 const rootReducer = combineReducers({
     authReducer: authReducer,
+    courseReducer: courseReducer,
 });
 
 // Activate Redux Devtool
