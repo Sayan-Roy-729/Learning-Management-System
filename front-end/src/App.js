@@ -7,6 +7,9 @@ import Home from './pages';
 import SigninPage from './pages/signin';
 import { currentSignInUser } from './actions/authAction';
 import CoursePage from './pages/course';
+import SignUpForm from './pages/signup';
+import OrderPage from './pages/order';
+import DashboardPage from './pages/dashboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -20,7 +23,10 @@ function App() {
       <Switch>
         <Route path="/" component={Home} exact/>
         <Route path="/signin" component={SigninPage} exact/>
-        <Route path = '/course' component = {CoursePage} exact />
+        <Route path = '/signup' component = {SignUpForm}/>
+        <Route path = '/dashboard' component = {DashboardPage}/>
+        <Route path = '/course/:id' component = {CoursePage} exact />
+        <Route path = '/order/:id' component = {OrderPage} />
       </Switch>
     </Router>
   );

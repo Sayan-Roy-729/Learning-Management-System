@@ -75,7 +75,21 @@ height: -80px;
 
 export const NavLinks = styled(LinkS)`
     color: #fff;
-    displya: flex;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    height: 100%;
+    cursor: pointer;
+
+    &.active{
+        border-bottom: 3px solid #01bf71;
+    }
+`;
+
+export const SignupLinks = styled(LinkR)`
+    color: #fff;
+    display: flex;
     align-items: center;
     text-decoration: none;
     padding: 0 1rem;

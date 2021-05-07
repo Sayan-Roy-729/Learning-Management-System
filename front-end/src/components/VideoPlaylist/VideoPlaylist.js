@@ -7,7 +7,7 @@ const PlayList = props => {
             {
                 props.videos.map((item, index) => {
                     return (
-                        <li className = "list-group-item" role = "button" key = {index} onClick = {() => props.videoChangeHandler(index)}>{item.title}</li>
+                        <li className = "list-group-item" role = "button" key = {item['_id']} onClick = {() => props.videoChangeHandler(index)}>{item['name']}</li>
                     );
                 })
             }
