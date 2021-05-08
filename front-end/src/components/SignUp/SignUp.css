@@ -91,7 +91,8 @@
     padding-bottom: 8px;
 }
 .FormField__Input {
-    width: 50%;
+    min-width: 250px;
+    width: 100%;
     background-color: transparent;
     border: none;
     color: rgb(29, 19, 19);
@@ -143,4 +144,28 @@
     display: inline-block;
     padding-bottom: 2px;
     margin-left: 5px;
+}
+
+@media (min-width: 1029px) {
+    .FormField__Input {
+        width: 900px;
+    }
+}
+
+@media (max-width: 1028px) {
+    .FormField__Input {
+        width: 700px;
+    }
+}
+
+@media (max-width: 750px) {
+    .FormField__Input {
+        width: 450px;
+    }
+}
+
+@media (max-width: 490px) {
+    .FormField__Input {
+        width: 250px;
+    }
 }

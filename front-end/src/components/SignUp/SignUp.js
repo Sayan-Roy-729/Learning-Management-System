@@ -34,12 +34,12 @@ const SignUp = (props) => {
         return <Loader />;
     } else {
         return (
-            <div className="FormCenter" style={{ marginTop: '50px' }}>
+            <div  style={{ marginTop: '50px' }}>
                 <form
                     onSubmit={(event) => signInHandler(event)}
-                    className="FormFields"
+                    className="d-flex flex-column justify-content-center  align-items-center"
                 >
-                    <div className="FormField">
+                    <div>
                         <label className="FormField__Label" htmlFor="email">
                             E-Mail Address
                         </label>
@@ -71,7 +71,7 @@ const SignUp = (props) => {
                         />
                     </div>
 
-                    <div className="FormField">
+                    <div className="FormField d-flex flex-column justify-content-center align-items-center">
                         <button
                             className="FormField__Button mr-20"
                             type="submit"
