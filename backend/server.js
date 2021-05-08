@@ -19,16 +19,21 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Static files (Access the video files, image files)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Routers
 app.use('/api/v1/courses', require('./router/courses.router'));
 app.use('/api/v1/', require('./router/payment.router'));
+app.use(require('./router/helperRoute'));
 
 // Handle error via middleware
 app.use((error, req, res, next) => {
     if (!error.statusCode) {
         error.statusCode = 500;
     }
-    res.status(error.statusCode).json({ error: error.message });
+    console.log('Error: ', error);
+    res.status(error.statusCode).json({ error: error });
 });
 
 // Start the server
@@ -37,3 +42,6 @@ app.listen(PORT, () => {
     mongodbConnection();
     console.log(`Server started on port ${PORT}`);
 });
+
+
+// ddlv3e2dp

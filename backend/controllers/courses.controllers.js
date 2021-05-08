@@ -1,12 +1,11 @@
+const fs = require('fs');
 const slugify = require('slugify');
 
 const Courses = require('../models/courses');
+const PaymentCourses = require('../models/payments');
 
 //! /api/v1/courses/get?name=courseName [GET]
 module.exports.getCourseController = (req, res, next) => {
-    // if we get any params
-    console.log('Query parameters = ', req.query);
-
     if (req.query.name) {
         // finding the course data by using name
         Courses.findOne({
@@ -16,17 +15,19 @@ module.exports.getCourseController = (req, res, next) => {
                 if (!course) {
                     const error = new Error('Course Not found!');
                     error.statusCode = 404;
-                    throw error;
+                    next(error);
+                    return;
                 } //finding the course by using course_id
                 return Courses.find({
                     parentId: course._id.toString(),
                 });
             })
             .then((data) => {
-                if (!data) {
+                if (data.length <= 0) {
                     const error = new Error('Content Not found!');
                     error.statusCode = 404;
-                    throw error;
+                    next(error);
+                    return;
                 }
                 // sending response
                 res.status(200).json({ massage: 'Successful', content: data });
@@ -42,10 +43,11 @@ module.exports.getCourseController = (req, res, next) => {
         Courses.find({ parentId: null })
             .then((course) => {
                 // If no course found, throw error.
-                if (!course) {
+                if (course.length <= 0) {
                     const error = new Error('No course found');
                     error.statusCode = 404;
                     next(error);
+                    return;
                 }
 
                 res.status(200).json({
@@ -55,7 +57,7 @@ module.exports.getCourseController = (req, res, next) => {
             })
             .catch((error) => {
                 if (!error.statusCode) {
-                    error.statusCode = 400;
+                    error.statusCode = 500;
                     next(error);
                 }
             });
@@ -76,41 +78,45 @@ module.exports.createCourseController = (req, res, next) => {
         const imageUrl = req.file.path;
         const slug = slugify(name);
 
-        Courses.findOne({ name }).then((course) => {
-            // Check the course is already exists, throw error
-            if (course) {
-                const error = new Error('Course already created!');
-                error.statusCode = 409;
-                next(error);
-            }
-
-            // create new course
-            const newCourse = new Courses({
-                name,
-                description,
-                imageUrl,
-                slug,
-            });
-
-            // save the course into database
-            newCourse.save((error, course) => {
-                if (error) {
-                    error.statusCode = 400;
+        Courses.findOne({ name })
+            .then((course) => {
+                // Check the course is already exists, throw error
+                if (course) {
+                    const error = new Error('Course already created!');
+                    error.statusCode = 409;
                     next(error);
-                } else {
-                    res.status(200).json({
-                        message: 'Successfully created!',
-                        course: course,
-                    });
+                    return;
                 }
-            });
-        }).catch(error => {
-            if (!error.statusCode) {
-                error.statusCode = 500;
-            }
 
-            next(error);
-        });
+                // create new course
+                const newCourse = new Courses({
+                    name,
+                    description,
+                    imageUrl,
+                    slug,
+                });
+
+                // save the course into database
+                newCourse.save((error, course) => {
+                    if (error) {
+                        error.statusCode = 400;
+                        next(error);
+                        return;
+                    } else {
+                        res.status(200).json({
+                            message: 'Successfully created!',
+                            course: course,
+                        });
+                    }
+                });
+            })
+            .catch((error) => {
+                if (!error.statusCode) {
+                    error.statusCode = 500;
+                }
+
+                next(error);
+            });
     }
 };
 
@@ -155,5 +161,109 @@ module.exports.uploadCourseContentController = (req, res, next) => {
                 }
             });
         });
+    }
+};
+
+// ? Update the course
+module.exports.courseUpdate = (req, res, next) => {
+    const courseId = req.body.id;
+
+    if (!courseId) {
+        res.status(404).json({ message: 'Please specify the course id' });
+    } else {
+        let imageFile;
+        if (req.file) {
+            imageFile = req.file.path;
+        }
+        Courses.findByIdAndUpdate(
+            courseId,
+            {
+                name: req.body.name,
+                description: req.body.description,
+                imageUrl: imageFile,
+            },
+            {
+                new: true,
+            },
+            (error, doc) => {
+                if (error) {
+                    error.statusCode = 500;
+                    next(error);
+                    return;
+                }
+                res.status(200).json({ message: 'Successfully updated', doc });
+            }
+        );
+    }
+};
+
+// ? Get the enrolled courses
+module.exports.enrolledCourses = (req, res, next) => {
+    console.log('User Enrolled body: ', req.body);
+    PaymentCourses.findOne({ userEmail: req.body.userEmail })
+        .then((user) => {
+            if (!user) {
+                res.status(404).json({ message: 'User is not found!' });
+            } else {
+                res.status(200).json({ message: 'Successful', user });
+            }
+        })
+        .catch((error) => {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            res.status(error.statusCode).json({ error });
+        });
+};
+
+//? Delete file from the uploads directory
+module.exports.deleteFile = (req, res, next) => {
+    const deleteFileName = req.body.filename;
+    const filePath = `./uploads/${deleteFileName}`;
+
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            res.status(500).json({ message: 'Failed to delete the file' });
+        } else {
+            res.status(200).json({ message: 'Successfully deleted the file!' });
+        }
+    });
+};
+
+//? Course Content Update
+module.exports.courseContentUpdate = (req, res, next) => {
+    const contentId = req.body.id;
+
+    if (!contentId) {
+        res.status(404).json({ message: 'Course content id is required!' });
+    } else {
+        let videoFile;
+        if (req.file) {
+            videoFile = req.file.path;
+        }
+
+        Courses.findByIdAndUpdate(
+            contentId,
+            {
+                name: req.body.name,
+                description: req.body.description,
+                videoUrl: videoFile,
+                parentId: req.body.parentId,
+            },
+            {
+                new: true,
+            },
+            (error, doc) => {
+                if (error) {
+                    error.statusCode = 500;
+                    res.status(500).json({ error });
+                } else {
+                    res.status(200).json({
+                        message: 'successfully updated',
+                        doc,
+                    });
+                }
+            }
+        );
     }
 };

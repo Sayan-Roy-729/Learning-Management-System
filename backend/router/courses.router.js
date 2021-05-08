@@ -10,12 +10,11 @@ const router = express.Router();
 //! Handle the image files
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        console.log(path.__dirname);
         cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        const uniqueName = `${Date.now()}-${
-            Math.random() * 1e10
-        }-${shortId.generate()}-${path.extname(file.originalname)}`;
+        const uniqueName = `${Date.now()}-${shortId.generate()}-${file.originalname}`;
         cb(null, uniqueName);
     },
 });
@@ -37,7 +36,7 @@ let imageUpload = multer({
         if (mimeType && extName) {
             return cb(null, true);
         } else {
-            cb('Error: Images only (*.png, *.jpg, *.jpeg)');
+            cb('Error: Images only (*.png, *.jpg, *.jpeg, *.svg)');
         }
     },
 }).single('courseImage'); // courseImage is the request body parameter
@@ -70,5 +69,17 @@ router.post('/create', imageUpload, courseController.createCourseController);
 
 //! api/v1/courses/upload [POST] (Upload video contents of the courses)
 router.post('/upload', videoUpload, courseController.uploadCourseContentController);
+
+//! api/v1/courses/course/update [POST] (Update the course) 
+router.post('/course/update', imageUpload, courseController.courseUpdate);
+
+//! api/v1/courses/enrolled [GET] (Get the enrolled courses id of an user)
+router.post('/enrolled', courseController.enrolledCourses);
+
+//! api/v1/courses/delete [POST] (Delete file from uploads directory)
+router.post('/delete', courseController.deleteFile);
+
+//! api/v1/courses/contentupdate, [POST] (Update the course content)
+router.post('/contentupdate', videoUpload, courseController.courseContentUpdate);
 
 module.exports = router;
