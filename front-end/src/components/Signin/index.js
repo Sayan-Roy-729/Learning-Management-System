@@ -109,10 +109,10 @@ const SignIn = (props) => {
                             <FormInput type='email' required value = {email} onChange = {(event) => setEmail(event.target.value)}/>
                             {
                                 !forgotPassword && (
-                                    <div>
+                                    <>
                                         <FormLabel htmlFor='for'>Password</FormLabel>
                                         <FormInput type='password' required value = {password} onChange = {(event) => setPassword(event.target.value)}/>
-                                    </div>
+                                    </>
                                 )
                             }
                             <FormButton type='submit'>Continue</FormButton>

@@ -1,31 +1,78 @@
 import React from 'react';
-import { SidebarContainer, Icon, CloseIcon, SidebarWrapper, SidebarMenu, SidebarLink , SideBtnWrap,SidebarRoute } from './SidebarElements';
+import { useSelector, useDispatch } from 'react-redux';
+
+import {
+    SidebarContainer,
+    Icon,
+    CloseIcon,
+    SidebarWrapper,
+    SidebarMenu,
+    SidebarLink,
+    SideBtnWrap,
+    SidebarRoute,
+    SidebarRoutePage,
+} from './SidebarElements';
+import { userSignOut } from '../../actions/authAction';
+import { clearCourseState } from '../../actions/courseAction';
+
 const Sidebar = ({ isOpen, toggle }) => {
+    const authState = useSelector(state => state.authReducer);
+    const dispatch = useDispatch();
+
+    const signOutHandler = () => {
+        dispatch(clearCourseState());
+        dispatch(userSignOut());
+    };
+
     return (
-     <SidebarContainer isOpen={isOpen} onClick={toggle}>
-         <Icon onClick={toggle}>
-             <CloseIcon />
-         </Icon>
-         <SidebarWrapper>
+        <SidebarContainer isOpen={isOpen} onClick={toggle}>
+            <Icon onClick={toggle}>
+                <CloseIcon />
+            </Icon>
+            <SidebarWrapper>
                 <SidebarMenu>
-                     <SidebarLink to="home" onClick={toggle}>
-                     Home  
-                    </SidebarLink>
+                    <SidebarRoutePage to="/" onClick={toggle}>
+                        Home
+                    </SidebarRoutePage>
                     <SidebarLink to="discover" onClick={toggle}>
-                     Discover  
+                        Placement Program
                     </SidebarLink>
-                    <SidebarLink to="courses" onClick={toggle}>
-                    Courses  
+                    <SidebarLink to="/dashboard" onClick={toggle}>
+                        Mock Interview
                     </SidebarLink>
-                    <SidebarLink to="signup" onClick={toggle}>
-                    Sign Up  
-                </SidebarLink>
-            </SidebarMenu>
-                <SideBtnWrap>
-                     <SidebarRoute to='/signin'>Sign In</SidebarRoute>
-                </SideBtnWrap>
+                    {
+                        authState.user && (
+                            <SidebarRoutePage to="/dashboard" onClick={toggle}>
+                                Dashboard
+                            </SidebarRoutePage>
+                        )
+                    }
+
+                    {
+                        authState.user === null && (
+                            <SidebarRoutePage to="/signup" onClick={toggle}>
+                                Sign Up
+                            </SidebarRoutePage>
+                        )
+                    }
+                    
+                </SidebarMenu>
+                {
+                        authState.user === null ? (
+                            <SideBtnWrap onClick={toggle}>
+                               <SidebarRoute to="/signin">Sign In</SidebarRoute>
+                            </SideBtnWrap>
+                        ) : (
+                            <SideBtnWrap to="/signup" onClick={toggle}>
+                                <SidebarRoute onClick = {signOutHandler}>Sign Out</SidebarRoute>
+                            </SideBtnWrap>
+                        )
+                    }
+                {/* <SideBtnWrap>
+                    <SidebarRoute to="/signin">Sign In</SidebarRoute>
+                </SideBtnWrap> */}
             </SidebarWrapper>
-     </SidebarContainer>
+        </SidebarContainer>
     );
 };
 

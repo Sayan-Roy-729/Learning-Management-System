@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { getCourseContent } from '../../actions/courseAction';
+import { getCourseContent, getCourses } from '../../actions/courseAction';
+import BootstrapNavbar from '../BootstrapNavbar/BootstrapNavbar';
 import OrderButton from '../PaymentOrderButton/PaymentOrderButton';
 import LoadingSpinner from '../Loader/Loader';
 
@@ -15,25 +16,25 @@ const CourseOrder = (props) => {
 
     // Fetch the course details
     useEffect(() => {
-        const course = courseState.courses.find(
-            (course) => course._id === props.id
-        );
-        setCourseDetail(course);
-
-        dispatch(getCourseContent(course.name));
-    }, []);
+        if (courseState.courses.length <= 0) {
+            dispatch(getCourses());
+        } else {
+            const course = courseState.courses.find(
+                (course) => course._id === props.id
+            );
+            setCourseDetail(course);
+            dispatch(getCourseContent(course.name));
+        }
+    }, [courseState.courses, props.id]);
 
     // If loading true, then show loader else return JSX
     if (courseState.loading) {
+        console.log('loading again');
         return <LoadingSpinner />;
     } else {
         return (
             <>
-                <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-                    <Link className="navbar-brand" to="/">
-                        CampusX
-                    </Link>
-                </nav>
+                <BootstrapNavbar />
 
                 <div className="container">
                     <div className="row mt-4">

@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import VideoPlayerController from '../components/VideoController/VideoController';
 import Playlist from '../components/VideoPlaylist/VideoPlaylist';
 import Loader from '../components/Loader/Loader';
-import { getCourseContent } from '../actions/courseAction';
+import BootstrapNavbar from '../components/BootstrapNavbar/BootstrapNavbar';
+import { getCourseContent, getCourses } from '../actions/courseAction';
 
 const PlaylistPage = (props) => {
+    const [videoIndex, setVideoIndex] = useState(0);
+    const [loading, setLoading] = useState(false);
     const courseId = props.match.params.id;
     const courseState = useSelector(state => state.courseReducer);
     const courseVideos = courseState['courseContent'];
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const courseDetails = courseState.courses.find(course => course['_id'] === courseId);
-        dispatch(getCourseContent(courseDetails['name']));
-    }, []);
+        if (courseState.courses.length <= 0) {
+            setLoading(true);
+            dispatch(getCourses());
+        } else {
+            const courseDetails = courseState.courses.find(course => course['_id'] === courseId);
+            dispatch(getCourseContent(courseDetails['name']));
+            setLoading(false);
+        }
+    }, [courseState.courses, courseId]);
     
-
-    const [videoIndex, setVideoIndex] = useState(0);
-
-    const videoPlayer = (event) => {
+    const videoPlayer = () => {
         if (videoIndex < courseVideos.length - 1) {
             setVideoIndex((oldState) => {
                 return oldState + 1;
@@ -37,14 +42,12 @@ const PlaylistPage = (props) => {
         return <Loader />
     } else if (courseState.loading) {
         return <Loader />
+    } else if (loading) {
+        return <Loader />
     } else {
         return (
             <>
-                <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-                    <Link className="navbar-brand" to="/">
-                        CampusX
-                    </Link>
-                </nav>
+                <BootstrapNavbar />
 
                 <div className="container">
                     <div className="row mt-4">
