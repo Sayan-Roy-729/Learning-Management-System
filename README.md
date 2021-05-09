@@ -142,5 +142,43 @@ Learning-Management-System
        |
        |--- package-lock.json
        |--- package.json
-      
 ```
+
+## :sparkler: :sparkler:Demo Images:
+### :camera_flash: Home Page
+![Home Page](https://github.com/Sayan-Roy-729/Learning-Management-System/blob/master/assets/demo/home.png)
+### :camera_flash: SignIn Page
+![SignIn Page](https://github.com/Sayan-Roy-729/Learning-Management-System/blob/master/assets/demo/signin.png)
+### :camera_flash: SignUp Page
+![SignUp Page](https://github.com/Sayan-Roy-729/Learning-Management-System/blob/master/assets/demo/image-6.png)
+### :camera_flash: Order Page
+![Order Page](https://github.com/Sayan-Roy-729/Learning-Management-System/blob/master/assets/demo/order.png)
+### :camera_flash: Dashboard Page
+![Dashboard Page](https://github.com/Sayan-Roy-729/Learning-Management-System/blob/master/assets/demo/dashboard.png)
+### :camera_flash: Course Page
+![Course Page](https://github.com/Sayan-Roy-729/Learning-Management-System/blob/master/assets/demo/course.png)
+
+
+## :key: Key Features:
+### :bulb: Backend
+:arrow_right: Node/Express</br>
+:arrow_right: MongoDB/Mongoose </br>
+:arrow_right: Rest API</br>
+:arrow_right: Incoming File Hanle</br>
+:arrow_right: Error Handle</br>
+:arrow_right: Payment Gateway</br>
+
+### :bulb: Frontend
+:arrow_right: React</br>
+:arrow_right: React Hooks</br>
+:arrow_right: Axios</br>
+:arrow_right: StyledComponent</br>
+:arrow_right: Custom CSS</br>
+:arrow_right: Bootstrap</br>
+:arrow_right: Firebase Authentication</br>
+:arrow_right: React Router</br>
+:arrow_right: Redux</br>
+:arrow_right: Custom Video Controller</br>
+
+
+#### :e-mail: My Email address: rsayan553@gmail.com
